@@ -4,8 +4,8 @@ import { AppService } from './app.service';
 import { DatabaseModule } from './database.module';
 import { ResourceModule } from './modules/resource/resource.module';
 import { ConfigModule } from '@nestjs/config';
-import { ScheduleModule } from '@nestjs/schedule';
 import { AdminPageModule } from './modules/admin/admin.module';
+import { StudentModule } from './student/student.module';
 
 @Module({
   imports: [
@@ -16,6 +16,7 @@ import { AdminPageModule } from './modules/admin/admin.module';
     DatabaseModule,
     ResourceModule,
     AdminPageModule,
+    StudentModule,
   ],
 
   controllers: [AppController],

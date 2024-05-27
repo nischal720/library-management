@@ -1,91 +1,92 @@
-
 export enum Gender {
-  MALE = "Male",
-  FEMALE = "Female",
-  OTHER = "Other"
+  MALE = 'Male',
+  FEMALE = 'Female',
+  OTHER = 'Other',
 }
 
 export enum EmploymentType {
-  CONTRACT = "Contract",
-  TEMPORARY = "Temporary",
-  FULL_TIME = "Full Time"
+  CONTRACT = 'Contract',
+  TEMPORARY = 'Temporary',
+  FULL_TIME = 'Full Time',
 }
-
 
 export enum YesNo {
-  Yes = "Yes",
-  No = "No"
+  Yes = 'Yes',
+  No = 'No',
 }
-
 
 export enum Status {
-  ACTIVE = "Active",
-  INACTIVE = "Inactive",
+  ACTIVE = 'Active',
+  INACTIVE = 'Inactive',
 }
 
-
 export enum EnableStatus {
-  Enabled = "Enabled",
-  Disabled = "Disabled"
+  Enabled = 'Enabled',
+  Disabled = 'Disabled',
 }
 
 export enum SeenStatus {
-  seen = "seen",
-  unseen = "unseen",
+  seen = 'seen',
+  unseen = 'unseen',
 }
 
-
 export enum TaskProgress {
-  PENDING = "Pending",
-  ASSIGNED = "Assigned",
-  ACCEPETD = "Accepted",
-  INPROGRESS = "In Progress",
-  COMPLETED = "Completed",
-  REJECTED = "Rejected",
-  INCOMPLETE = "Incomplete",
+  PENDING = 'Pending',
+  ASSIGNED = 'Assigned',
+  ACCEPETD = 'Accepted',
+  INPROGRESS = 'In Progress',
+  COMPLETED = 'Completed',
+  REJECTED = 'Rejected',
+  INCOMPLETE = 'Incomplete',
 }
 
 export enum RequestState {
-  PENDING = "Pending",
-  ACCEPETD = "Accepted",
-  REJECTED = "Rejected",
+  PENDING = 'Pending',
+  ACCEPETD = 'Accepted',
+  REJECTED = 'Rejected',
 }
 
 export enum MarriedStatus {
-  MARRIED = "Married",
-  UNMARRIED = "Unmarried",
+  MARRIED = 'Married',
+  UNMARRIED = 'Unmarried',
 }
-
 
 export enum PStatus {
-  PENDING = "pending",
-  APPROVED = "approved",
-  DISCARDED = "discarded",
+  PENDING = 'pending',
+  APPROVED = 'approved',
+  DISCARDED = 'discarded',
 }
-
 
 export enum ImagableType {
-  image = "image",
-  video = "video"
+  image = 'image',
+  video = 'video',
 }
 
-
 export enum ResponseStatus {
-  SUCCESS = "success",
-  ERROR = "error",
+  SUCCESS = 'success',
+  ERROR = 'error',
 }
 
 export enum NotificationType {
-  task = "task",
+  task = 'task',
 }
 
-
-
 export enum AdminType {
-  Support = "Support",
-  Admin = "Admin"
+  Support = 'Support',
+  Admin = 'Admin',
 }
 
 export enum UserType {
-  Admin = "Admin",
+  Admin = 'Admin',
+}
+
+export enum BloodGroup {
+  A_POSITIVE = 'A+',
+  B_POSITIVE = 'B+',
+  B_NEGATIVE = 'B-',
+  AB_POSITIVE = 'AB+',
+  A_NEGATIVE = 'A-',
+  O_POSITIVE = 'O+',
+  O_NEGATIVE = 'O-',
+  OTHER = 'other',
 }
