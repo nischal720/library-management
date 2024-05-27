@@ -2,6 +2,7 @@ import {
   HttpException,
   HttpStatus,
   Injectable,
+  NotAcceptableException,
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -28,9 +29,8 @@ export class StudentSiblingService {
     const { student1Id, student2Id, relation } = createSiblingDto;
 
     if (student1Id === student2Id) {
-      throw new HttpException(
+      throw new NotAcceptableException(
         'A student cannot be a sibling to themselves',
-        HttpStatus.BAD_REQUEST,
       );
     }
 

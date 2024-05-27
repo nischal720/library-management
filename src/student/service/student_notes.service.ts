@@ -23,8 +23,8 @@ export class StudentNoteService {
   }
 
   async getAllNotes(
-    student_id?: number,
-    user_id?: number,
+    student_id: number,
+    user_id: number,
   ): Promise<StudentNoteResponse[]> {
     const query = this.studentNoteRepository.createQueryBuilder('student_note');
 
