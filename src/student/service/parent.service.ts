@@ -3,17 +3,30 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CreateParentDto } from 'src/student/dto/create-parent.dto';
 import { UpdateParentDto } from 'src/student/dto/update-parent.dto';
 import { Parent } from 'src/student/entities/parent_info.entity';
-import { Repository } from 'typeorm';
+import { Repository, DeepPartial } from 'typeorm';
+import { StudentFile } from '../entities/file.entity';
+import { Resource } from 'src/entities/resources.entity';
 
 @Injectable()
 export class ParentService {
   constructor(
     @InjectRepository(Parent)
     private parentRepository: Repository<Parent>,
+    @InjectRepository(StudentFile)
+    private readonly studentFileRepository: Repository<StudentFile>,
   ) {}
 
   async createParent(createParentDto: CreateParentDto): Promise<Parent> {
-    const parent = this.parentRepository.create(createParentDto);
+    let { img, ...parentDetails } = createParentDto;
+
+    const resource: DeepPartial<Resource> = { name: img.name };
+    const saveImg = await this.studentFileRepository.save(resource);
+    const createParentDoc = {
+      ...parentDetails,
+      imgId: saveImg.id,
+    };
+
+    const parent = await this.parentRepository.create(createParentDoc);
     return this.parentRepository.save(parent);
   }
 
@@ -21,7 +34,15 @@ export class ParentService {
     id: number,
     updateParentDto: UpdateParentDto,
   ): Promise<Parent> {
-    await this.parentRepository.update(id, updateParentDto);
+    const { img, ...parentDetails } = updateParentDto;
+
+    if (img) {
+      const resource: DeepPartial<Resource> = { name: img.name };
+      const saveImg = await this.studentFileRepository.save(resource);
+      parentDetails.imgId = saveImg.id;
+    }
+
+    await this.parentRepository.update(id, parentDetails);
     return this.parentRepository.findOne({
       where: {
         id: id,

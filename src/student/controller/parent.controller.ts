@@ -18,7 +18,7 @@ import { ParentService } from 'src/student/service/parent.service';
 export class ParentController {
   constructor(private readonly parentService: ParentService) {}
   @ApiResponse({
-    type: UpdateParentDto,
+    type: CreateParentDto,
   })
   @Post('/')
   create(@Body() createParentDto: CreateParentDto) {

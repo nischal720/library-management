@@ -1,11 +1,11 @@
 import { Page } from '@sksharma72000/nestjs-search-page';
 import { IsEnum, IsNotEmpty, IsOptional } from 'class-validator';
 import { User } from 'src/entities/user.entity';
-import { ResourceDto } from 'src/modules/resource/dto/resource.dto';
 import { OneToOne, JoinColumn } from 'typeorm';
 import { StudentresponseDto } from './student_response.dto';
 import { ApiProperty } from '@nestjs/swagger';
 import { BloodGroup, Gender, Status } from 'src/common/enums/all.enum';
+import { ResourceDto } from 'src/modules/resource/dto/resource.dto';
 
 export class StudentPage extends Page<StudentresponseDto> {
   public elements: StudentresponseDto[];
@@ -89,6 +89,9 @@ export class CreateStudentDto {
   address1: string;
   address2?: string;
 
+  @IsOptional()
+  imgId: number;
+
   @ApiProperty()
   @IsOptional()
   img?: ResourceDto;
@@ -102,9 +105,6 @@ export class CreateStudentDto {
   @IsEnum(Status)
   status: 'Active' | 'Inactive';
 
-  @ApiProperty()
-  @IsOptional()
-  subjects: string[];
   @OneToOne(() => User, (user) => user.id)
   @JoinColumn({ name: 'created_by' })
   createdBy: User;

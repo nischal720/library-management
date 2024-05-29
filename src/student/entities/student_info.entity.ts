@@ -1,10 +1,11 @@
 import { BaseEntity } from 'src/database/entities/base.entity';
 import { Resource } from 'src/entities/resources.entity';
-import { OneToOne, OneToMany } from 'typeorm';
+import { OneToOne, OneToMany, ManyToMany, JoinTable } from 'typeorm';
 import { Entity, Column } from 'typeorm';
 import { StudentToParent } from './student-parent-relation.entity';
 import { StudentSibling } from './student_sibling.entity';
 import { ApiProperty } from '@nestjs/swagger';
+import { Subject } from './subject.entity';
 
 @Entity({ name: 'student' })
 export class StudentInfo extends BaseEntity {
@@ -119,7 +120,7 @@ export class StudentInfo extends BaseEntity {
   @OneToMany(() => StudentSibling, (sibling) => sibling.student2)
   siblings2: StudentSibling[];
 
-  //   @ManyToMany(() => Subject, (subject) => subject.students)
-  //   @JoinTable()
-  //   subjects: Subject[];
+  @ManyToMany(() => Subject, (subject) => subject.name)
+  @JoinTable()
+  subjects: Subject[];
 }

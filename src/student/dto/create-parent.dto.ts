@@ -1,6 +1,7 @@
 import { IsString, IsOptional, IsEnum, IsEmail } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { BloodGroup, Gender } from 'src/common/enums/all.enum';
+import { ResourceDto } from 'src/modules/resource/dto/resource.dto';
 
 export class CreateParentDto {
   @ApiProperty()
@@ -30,19 +31,20 @@ export class CreateParentDto {
   @ApiProperty()
   @IsOptional()
   @IsEnum(BloodGroup)
-  bloodGroup?: string;
-
+  bloodGroup?: BloodGroup;
+  @ApiProperty()
+  @IsOptional()
+  imgId: number;
   @ApiProperty()
   @IsOptional()
   @IsEnum(Gender)
-  gender?: string;
+  gender?: Gender;
   @ApiProperty()
   @IsOptional()
   @IsEmail()
   email?: string;
-
   @ApiProperty()
   @IsOptional()
-  @IsString()
-  img?: string;
+  @ApiProperty()
+  img: ResourceDto;
 }

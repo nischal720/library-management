@@ -90,3 +90,9 @@ export enum BloodGroup {
   O_NEGATIVE = 'O-',
   OTHER = 'other',
 }
+
+export enum StudentDocumentType {
+  CITIZENSHIP = 'Citizenship',
+  BIRTHCIRTIFICATE = 'Birth_Certificate',
+  DRIVING_LICENCE = 'Driving_Licence',
+}

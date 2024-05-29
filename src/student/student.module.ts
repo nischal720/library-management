@@ -25,6 +25,10 @@ import { StudentNotesController } from './controller/student_note.controller';
 import { StudentAttendance } from './entities/student_attendance.entity';
 import { StudentAttendanceService } from './service/student_attendance.service';
 import { StudentAttendanceController } from './controller/student_attendance.controller';
+import { StudentDocuemnt } from './entities/student_documents.entity';
+import { StudentFile } from './entities/file.entity';
+import { StudentDocuemntService } from './service/student_docuemnt.service';
+import { StudentDocumentComtroller } from './controller/student_document.controler';
 
 @Module({
   imports: [
@@ -38,6 +42,8 @@ import { StudentAttendanceController } from './controller/student_attendance.con
       StudentAcademic,
       StudentNote,
       StudentAttendance,
+      StudentFile,
+      StudentDocuemnt,
     ]),
   ],
   providers: [
@@ -49,6 +55,7 @@ import { StudentAttendanceController } from './controller/student_attendance.con
     StudentAcademicService,
     StudentNoteService,
     StudentAttendanceService,
+    StudentDocuemntService,
   ],
   controllers: [
     StudentController,
@@ -59,6 +66,7 @@ import { StudentAttendanceController } from './controller/student_attendance.con
     StudentAcademicController,
     StudentNotesController,
     StudentAttendanceController,
+    StudentDocumentComtroller,
   ],
 })
 export class StudentModule {}

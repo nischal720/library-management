@@ -1,8 +1,9 @@
-import { Entity, Column, OneToMany } from 'typeorm';
+import { Entity, Column, OneToMany, OneToOne, JoinColumn } from 'typeorm';
 import { BaseEntity } from 'src/database/entities/base.entity';
 import { StudentToParent } from './student-parent-relation.entity';
 import { ApiProperty } from '@nestjs/swagger';
 import { BloodGroup, Gender } from 'src/common/enums/all.enum';
+import { Resource } from 'src/entities/resources.entity';
 
 @Entity('parents')
 export class Parent extends BaseEntity {
@@ -16,7 +17,7 @@ export class Parent extends BaseEntity {
 
   @ApiProperty()
   @Column({ length: 200, nullable: true })
-  occupation: string;
+  occupation: string | null;
 
   @ApiProperty()
   @Column({ length: 10, unique: true })
@@ -24,11 +25,11 @@ export class Parent extends BaseEntity {
 
   @ApiProperty()
   @Column({ length: 200, nullable: true })
-  address1: string;
+  address1: string | null;
 
   @ApiProperty()
   @Column({ length: 200, nullable: true })
-  address2: string;
+  address2: string | null;
 
   @ApiProperty()
   @Column({
@@ -36,20 +37,20 @@ export class Parent extends BaseEntity {
     enum: BloodGroup,
     nullable: true,
   })
-  bloodGroup: string;
+  bloodGroup: BloodGroup | null;
 
   @ApiProperty()
   @Column({ type: 'enum', enum: Gender, nullable: true })
-  gender: string;
+  gender: Gender | null;
 
   @ApiProperty()
   @Column({ length: 200, nullable: true })
-  email: string;
+  email: string | null;
 
-
-  @Column({ length: 200, nullable: true })
-  img: string;
+  @OneToOne(() => Resource, (img) => img.id)
+  @JoinColumn({ name: 'imgId' })
+  img: Resource; 
 
   @OneToMany(() => StudentToParent, (relation) => relation.relation)
-  studentRelations: StudentToParent;
+  studentRelations: StudentToParent[];
 }

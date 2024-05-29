@@ -33,7 +33,7 @@ export class StudentNotesController {
   @Get()
   getAllNotes(
     @Query('student_id') student_id: number,
-    @Query('user_id') user_id: number,
+    @Query('user_id') user_id?: number,
   ) {
     return this.studentNotesService.getAllNotes(student_id, user_id);
   }
