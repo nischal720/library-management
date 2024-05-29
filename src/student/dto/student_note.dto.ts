@@ -3,17 +3,17 @@ import { PartialType } from '@nestjs/mapped-types';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateStudentNoteDto {
-  @ApiProperty()
+  @ApiProperty({ required: false })
   @IsNotEmpty()
   @IsInt()
   student_id: number;
 
-  @ApiProperty()
+  @ApiProperty({ required: false })
   @IsNotEmpty()
   @IsInt()
   user_id: number;
 
-  @ApiProperty()
+  @ApiProperty({ required: false })
   @IsString()
   @IsNotEmpty()
   notes: string;
