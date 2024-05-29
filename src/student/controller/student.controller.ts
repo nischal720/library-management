@@ -15,6 +15,7 @@ import { StudentSearchDto } from '../dto/student_search.dto';
 import { PageDto } from 'src/common/dto/page.dto';
 import { UpdateStudentDto } from '../dto/update.student.dto';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { StudentInfo } from '../entities/student_info.entity';
 
 @ApiTags('student')
 @Controller('student')
@@ -42,7 +43,10 @@ export class StudentController {
 
   @Patch(':id')
   @Put(':id')
-  update(@Body() updateStudentDto: UpdateStudentDto, @Param('id') id: number) {
+  update(
+    @Body() updateStudentDto: UpdateStudentDto,
+    @Param('id') id: number,
+  ): Promise<StudentInfo> {
     return this.studentService.updateStudentInfo(id, updateStudentDto);
   }
 
