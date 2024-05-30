@@ -4,14 +4,13 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { Repository, DeepPartial } from 'typeorm';
+import { Repository, DeepPartial, SelectQueryBuilder } from 'typeorm';
 import { StudentInfo } from '../entities/student_info.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateStudentDto } from '../dto/student.dto';
 import { PageDto } from 'src/common/dto/page.dto';
 import { StudentSearchDto } from '../dto/student_search.dto';
 import { Page, findAllByPage } from '@sksharma72000/nestjs-search-page';
-import { StudentresponseDto } from '../dto/student_response.dto';
 import { UpdateStudentDto } from '../dto/update.student.dto';
 import { Resource } from 'src/entities/resources.entity';
 import { StudentFile } from '../entities/file.entity';
@@ -72,11 +71,20 @@ export class StudentService {
   async findAll(
     pageable: PageDto,
     studentSearchDto: StudentSearchDto,
-  ): Promise<Page<StudentresponseDto>> {
+  ): Promise<Page<StudentInfo>> {
     return findAllByPage({
       repo: this.studentRepository,
       page: pageable,
       queryDto: studentSearchDto,
+      customQuery: [
+        {
+          is_relational: true,
+          column: 'subjects',
+          operation: 'eq',
+          operator: 'and',
+          value: `entity.subjects`,
+        },
+      ],
     });
   }
 
@@ -102,12 +110,14 @@ export class StudentService {
     updateStudentDto: UpdateStudentDto,
   ): Promise<StudentInfo> {
     const { img, subjects, ...updatedStudentDetails } = updateStudentDto;
-    const student = await this.studentRepository.findOne({
+
+    let student = await this.studentRepository.findOne({
       where: { id: id },
-      relations: ['subjects'],
+      relations: ['subjects'], // Ensure 'subjects' relation is loaded
     });
+
     if (!student) {
-      throw new NotFoundException('Student not found by id ' + id);
+      throw new NotFoundException('Student not found');
     }
 
     if (img) {
@@ -131,10 +141,19 @@ export class StudentService {
           return subject;
         }),
       );
-      (updatedStudentDetails as any).subjects = subjectEntities; // Type assertion to handle dynamic property
+      student.subjects = subjectEntities;
     }
 
-    await this.studentRepository.update(id, updatedStudentDetails);
+    const updatedData = {
+      ...updatedStudentDetails,
+      subjects: student.subjects,
+    };
+
+    await this.studentRepository.save({
+      ...student,
+      ...updatedData,
+    });
+
     return this.studentRepository.findOne({
       where: { id: id },
       relations: ['subjects'],
