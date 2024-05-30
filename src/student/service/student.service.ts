@@ -113,7 +113,7 @@ export class StudentService {
 
     let student = await this.studentRepository.findOne({
       where: { id: id },
-      relations: ['subjects'], // Ensure 'subjects' relation is loaded
+      relations: ['subjects'],
     });
 
     if (!student) {
