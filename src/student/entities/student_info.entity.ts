@@ -90,6 +90,10 @@ export class StudentInfo extends BaseEntity {
   address2: string;
 
   @ApiProperty()
+  @Column()
+  imgId: number;
+
+  @ApiProperty()
   @OneToOne(() => Resource, (image) => image.id)
   img: Resource;
 
@@ -121,6 +125,6 @@ export class StudentInfo extends BaseEntity {
   siblings2: StudentSibling[];
 
   @ManyToMany(() => Subject, (subject) => subject.name)
-  @JoinTable()
+  @JoinTable({ name: 'subject_id' })
   subjects: Subject[];
 }

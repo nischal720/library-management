@@ -6,6 +6,7 @@ import { StudentresponseDto } from './student_response.dto';
 import { ApiProperty } from '@nestjs/swagger';
 import { BloodGroup, Gender, Status } from 'src/common/enums/all.enum';
 import { ResourceDto } from 'src/modules/resource/dto/resource.dto';
+import { SubjectDto } from './subjects.dto';
 
 export class StudentPage extends Page<StudentresponseDto> {
   public elements: StudentresponseDto[];
@@ -99,6 +100,10 @@ export class CreateStudentDto {
   @ApiProperty()
   @IsOptional()
   user: string;
+
+  @ApiProperty()
+  @IsOptional()
+  subjects: string[];
 
   @ApiProperty()
   @IsOptional()

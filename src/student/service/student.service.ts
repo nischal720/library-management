@@ -15,6 +15,7 @@ import { StudentresponseDto } from '../dto/student_response.dto';
 import { UpdateStudentDto } from '../dto/update.student.dto';
 import { Resource } from 'src/entities/resources.entity';
 import { StudentFile } from '../entities/file.entity';
+import { Subject } from '../entities/subject.entity';
 
 @Injectable()
 export class StudentService {
@@ -23,27 +24,48 @@ export class StudentService {
     private readonly studentRepository: Repository<StudentInfo>,
     @InjectRepository(StudentFile)
     private readonly studentFileRepository: Repository<StudentFile>,
+    @InjectRepository(Subject)
+    private readonly subjectRepository: Repository<Subject>,
   ) {}
 
   async create(createStudentDto: CreateStudentDto): Promise<StudentInfo> {
-    const { uni_reg, img, ...studentDetails } = createStudentDto;
+    const { uni_reg, img, subjects, ...studentDetails } = createStudentDto;
     const studentPre = await this.studentRepository.findOne({
-      where: {
-        uni_reg: uni_reg,
-      },
+      where: { uni_reg: uni_reg },
     });
     if (studentPre) {
-      throw new HttpException('Student aleady present', HttpStatus.CONFLICT);
+      throw new HttpException('Student already present', HttpStatus.CONFLICT);
     }
+
     const resource: DeepPartial<Resource> = { name: img.name };
     const saveImg = await this.studentFileRepository.save(resource);
 
-    const createStudentData = {
+    const createStudentData: DeepPartial<StudentInfo> = {
       ...studentDetails,
       imgId: saveImg.id,
       uni_reg: uni_reg,
     };
-    const student = await this.studentRepository.create(createStudentData);
+
+    const student = this.studentRepository.create(createStudentData);
+
+    if (subjects && subjects.length > 0) {
+      const subjectEntities = await Promise.all(
+        subjects.map(async (subjectName) => {
+          let subject = await this.subjectRepository.findOne({
+            where: { name: subjectName },
+          });
+          if (!subject) {
+            subject = this.subjectRepository.create({
+              name: subjectName,
+            } as DeepPartial<Subject>);
+            await this.subjectRepository.save(subject);
+          }
+          return subject;
+        }),
+      );
+      student.subjects = subjectEntities;
+    }
+
     return this.studentRepository.save(student);
   }
 
@@ -60,12 +82,11 @@ export class StudentService {
 
   async findById(id: number): Promise<StudentInfo> {
     const student = await this.studentRepository.findOne({
-      where: {
-        id: id,
-      },
+      where: { id: id },
+      relations: ['subjects'],
     });
     if (!student) {
-      throw new NotFoundException('Student not found by id' + ' ' + id);
+      throw new NotFoundException('Student not found by id ' + id);
     }
 
     return student;
@@ -80,14 +101,13 @@ export class StudentService {
     id: number,
     updateStudentDto: UpdateStudentDto,
   ): Promise<StudentInfo> {
-    const { img, ...updatedStudentDetails } = updateStudentDto;
+    const { img, subjects, ...updatedStudentDetails } = updateStudentDto;
     const student = await this.studentRepository.findOne({
-      where: {
-        id: id,
-      },
+      where: { id: id },
+      relations: ['subjects'],
     });
     if (!student) {
-      throw new NotFoundException('Student not found by id' + ' ' + id);
+      throw new NotFoundException('Student not found by id ' + id);
     }
 
     if (img) {
@@ -95,11 +115,29 @@ export class StudentService {
       const saveImg = await this.studentFileRepository.save(resource);
       updatedStudentDetails.imgId = saveImg.id;
     }
+
+    if (subjects && subjects.length > 0) {
+      const subjectEntities = await Promise.all(
+        subjects.map(async (subjectName) => {
+          let subject = await this.subjectRepository.findOne({
+            where: { name: subjectName },
+          });
+          if (!subject) {
+            subject = this.subjectRepository.create({
+              name: subjectName,
+            } as DeepPartial<Subject>);
+            await this.subjectRepository.save(subject);
+          }
+          return subject;
+        }),
+      );
+      (updatedStudentDetails as any).subjects = subjectEntities; // Type assertion to handle dynamic property
+    }
+
     await this.studentRepository.update(id, updatedStudentDetails);
     return this.studentRepository.findOne({
-      where: {
-        id: id,
-      },
+      where: { id: id },
+      relations: ['subjects'],
     });
   }
 }

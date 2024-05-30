@@ -29,6 +29,7 @@ import { StudentDocuemnt } from './entities/student_documents.entity';
 import { StudentFile } from './entities/file.entity';
 import { StudentDocuemntService } from './service/student_docuemnt.service';
 import { StudentDocumentComtroller } from './controller/student_document.controler';
+import { Subject } from './entities/subject.entity';
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { StudentDocumentComtroller } from './controller/student_document.control
       StudentAttendance,
       StudentFile,
       StudentDocuemnt,
+      Subject
     ]),
   ],
   providers: [
