@@ -7,6 +7,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { BloodGroup, Gender, Status } from 'src/common/enums/all.enum';
 import { ResourceDto } from 'src/modules/resource/dto/resource.dto';
 import { SubjectDto } from './subjects.dto';
+import { CreateStudentCurrentDto } from './create_student_current.dto';
 
 export class StudentPage extends Page<StudentresponseDto> {
   public elements: StudentresponseDto[];
@@ -60,6 +61,9 @@ export class CreateStudentDto {
   @ApiProperty()
   @IsOptional()
   email?: string;
+
+  @ApiProperty({ type: CreateStudentCurrentDto })
+  currentClass: CreateStudentCurrentDto;
 
   @ApiProperty()
   @IsEnum(BloodGroup)
